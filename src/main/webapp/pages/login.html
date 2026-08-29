@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff login · Sunrise Dental</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="icon" href="/images/logo.svg">
+</head>
+<body>
+  <div class="login-shell">
+    <aside class="login-art">
+      <a class="brand" href="/" style="color:white"><img src="/images/logo.svg" alt=""> Sunrise Dental</a>
+      <div>
+        <div class="kicker" style="color:#bfdbfe">Staff desk</div>
+        <h2>A calm, accurate front desk for a busy Colombo clinic.</h2>
+        <p style="max-width:420px;color:rgba(255,255,255,0.8)">Only authorised staff can open patient files. Sessions expire after 30 minutes of inactivity. Use Exit when you leave the chair.</p>
+      </div>
+      <p style="color:rgba(255,255,255,0.65)">42 Galle Road, Colombo 03</p>
+    </aside>
+    <section class="login-panel">
+      <form class="login-card" id="login-form">
+        <a class="brand" href="/" style="margin-bottom:18px"><img src="/images/logo.svg" alt=""> Sunrise Dental</a>
+        <h2 style="margin:0 0 8px;letter-spacing:-0.04em">Sign in</h2>
+        <p class="muted" style="margin:0 0 18px">Use the username issued by the clinic administrator.</p>
+        <div class="alert" id="login-error"></div>
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <label class="check"><input type="checkbox" id="remember"> Keep me signed in on this clinic PC</label>
+        <button class="btn btn-navy" style="width:100%;justify-content:center;margin-top:16px" type="submit">
+          Enter the desk <span class="orb">→</span>
+        </button>
+        <div class="hint">
+          Demo accounts<br>
+          <code>admin</code> / <code>Admin@123</code><br>
+          <code>receptionist</code> / <code>Rec@123</code><br>
+          <code>dentist</code> / <code>Dent@123</code>
+        </div>
+      </form>
+    </section>
+  </div>
+  <script src="/js/api.js"></script>
+  <script>
+    (async () => {
+      const session = await api.get('/api/session');
+      if (session.success && session.data.authenticated) {
+        location.href = '/pages/app.html';
+      }
+    })();
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const error = document.getElementById('login-error');
+      error.style.display = 'none';
+      const payload = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+        remember: document.getElementById('remember').checked
+      };
+      const result = await api.post('/api/login', payload);
+      if (!result.success) {
+        error.textContent = result.message;
+        error.style.display = 'block';
+        return;
+      }
+      location.href = '/pages/app.html';
+    });
+  </script>
+</body>
+</html>
