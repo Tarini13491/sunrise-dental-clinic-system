@@ -8,6 +8,8 @@ public class Patient {
     private String contactNumber;
     private String email;
     private String gender;
+    private java.sql.Date dateOfBirth;
+    private String notes;
 
     public int getPatientId() {
         return patientId;
@@ -55,5 +57,21 @@ public class Patient {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public java.sql.Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(java.sql.Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

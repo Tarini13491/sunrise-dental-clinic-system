@@ -9,9 +9,11 @@ import com.sunrisedental.controller.HealthServlet;
 import com.sunrisedental.controller.HelpServlet;
 import com.sunrisedental.controller.LoginServlet;
 import com.sunrisedental.controller.LogoutServlet;
+import com.sunrisedental.controller.PatientServlet;
 import com.sunrisedental.controller.ReportServlet;
 import com.sunrisedental.controller.SearchServlet;
 import com.sunrisedental.controller.SessionServlet;
+import com.sunrisedental.controller.StaffServlet;
 import com.sunrisedental.filter.AuthenticationFilter;
 import com.sunrisedental.filter.CharacterEncodingFilter;
 import jakarta.servlet.DispatcherType;
@@ -28,10 +30,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.EnumSet;
 
-/**
- * Embedded Jetty launcher so the project can run from IntelliJ without
- * a separate Tomcat install. web.xml remains for students who deploy a WAR.
- */
 public final class ServerLauncher {
 
     public static void main(String[] args) throws Exception {
@@ -72,6 +70,8 @@ public final class ServerLauncher {
         ctx.addServlet(DashboardServlet.class, "/api/dashboard");
         ctx.addServlet(ReportServlet.class, "/api/reports");
         ctx.addServlet(HelpServlet.class, "/api/help");
+        ctx.addServlet(StaffServlet.class, "/api/staff");
+        ctx.addServlet(PatientServlet.class, "/api/patients");
         ctx.addServlet(HealthServlet.class, "/api/health");
 
         ServletHolder defaults = new ServletHolder("default", DefaultServlet.class);
@@ -84,7 +84,7 @@ public final class ServerLauncher {
         System.out.println();
         System.out.println("Sunrise Dental Clinic is running at http://127.0.0.1:" + port + "/");
         System.out.println("Staff portal: http://127.0.0.1:" + port + "/pages/login.html");
-        System.out.println("Demo logins: admin / Admin@123  ·  receptionist / Rec@123  ·  dentist / Dent@123");
+        System.out.println("Demo logins: admin / Admin@123  ·  staff / Staff@123");
         System.out.println();
         server.join();
     }

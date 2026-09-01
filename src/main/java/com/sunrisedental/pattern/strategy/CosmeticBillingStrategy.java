@@ -2,7 +2,6 @@ package com.sunrisedental.pattern.strategy;
 
 import java.math.BigDecimal;
 
-/** Cosmetic treatments are priced as listed — no clinical subsidy. */
 public class CosmeticBillingStrategy implements BillingStrategy {
     @Override
     public String name() {

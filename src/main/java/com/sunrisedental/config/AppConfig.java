@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Loads application.properties once. Presentation, business, and data layers
- * all read configuration through this class rather than hard-coded values.
- */
 public final class AppConfig {
 
     private static final Properties PROPS = new Properties();

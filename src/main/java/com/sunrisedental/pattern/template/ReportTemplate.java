@@ -4,17 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Template Method pattern — every management report follows the same
- * skeleton: title, fetch, summarise, ready-for-JSON.
- *
- * Why: daily revenue, dentist performance and treatment popularity all need
- * the same wrapping for the dashboard. Subclasses only supply the query.
- *
- * Evaluation: Template Method prevents copy-paste in the report servlets.
- * It is less flexible than Strategy if report steps start to diverge a lot;
- * for this clinic the steps are stable.
- */
 public abstract class ReportTemplate {
 
     public final Map<String, Object> generate() {

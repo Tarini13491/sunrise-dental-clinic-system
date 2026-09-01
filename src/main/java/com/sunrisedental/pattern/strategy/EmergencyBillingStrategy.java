@@ -2,7 +2,6 @@ package com.sunrisedental.pattern.strategy;
 
 import java.math.BigDecimal;
 
-/** Emergency visits add a 20% same-day surcharge on the treatment fee. */
 public class EmergencyBillingStrategy implements BillingStrategy {
     @Override
     public String name() {

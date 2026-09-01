@@ -21,16 +21,6 @@ import java.sql.Time;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Facade pattern — one entry point for "book a visit" and "issue a bill".
- *
- * Why: a servlet should not orchestrate stored procedures, billing strategy,
- * decorator stack and observers. The facade is the business-tier API.
- *
- * Evaluation: Facade is the backbone of the 3-tier split. Services remain
- * thin wrappers; the facade is where use-cases live. The risk is a "god"
- * facade — we keep it to the two clinic use-cases that span multiple DAOs.
- */
 public class ClinicFacade {
 
     private final AppointmentDao appointments = DaoFactory.get().appointments();

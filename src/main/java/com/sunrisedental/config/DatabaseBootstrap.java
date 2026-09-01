@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-/**
- * Creates schema, routines and demo staff accounts the first time the app starts.
- */
 public final class DatabaseBootstrap {
 
     private static final Logger LOG = Logger.getLogger(DatabaseBootstrap.class.getName());
@@ -51,6 +48,9 @@ public final class DatabaseBootstrap {
         }
         if (tableExists("treatments") && count("treatments") == 0 && seed != null) {
             executeScript(seed, ";");
+        }
+        if (tableExists("users")) {
+            migrateUserRoles();
         }
         new UserDao().ensureDefaultUsers();
         linkDentistAccounts();
@@ -194,13 +194,41 @@ public final class DatabaseBootstrap {
         }
     }
 
+    private static void migrateUserRoles() {
+        Connection c = null;
+        try {
+            c = DatabaseConnection.getInstance().getConnection();
+            try (Statement st = c.createStatement()) {
+                try {
+                    st.executeUpdate("ALTER TABLE users MODIFY COLUMN role ENUM('ADMIN','RECEPTIONIST','DENTIST','STAFF') NOT NULL");
+                } catch (SQLException ignored) {
+                }
+                try {
+                    st.executeUpdate("UPDATE users SET role = 'STAFF' WHERE role IN ('RECEPTIONIST', 'DENTIST')");
+                } catch (SQLException ignored) {
+                }
+                try {
+                    st.executeUpdate("UPDATE users SET active = 0 WHERE username = 'dentist'");
+                } catch (SQLException ignored) {
+                }
+                try {
+                    st.executeUpdate("ALTER TABLE users MODIFY COLUMN role ENUM('ADMIN','STAFF') NOT NULL");
+                } catch (SQLException ignored) {
+                }
+            }
+        } catch (SQLException e) {
+            LOG.warning("Role migration skipped: " + e.getMessage());
+        } finally {
+            DatabaseConnection.getInstance().release(c);
+        }
+    }
+
     private static void linkDentistAccounts() {
         try (Connection c = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = c.prepareStatement(
                      "UPDATE dentists d JOIN users u ON u.full_name = d.full_name SET d.user_id = u.user_id WHERE d.user_id IS NULL")) {
             ps.executeUpdate();
         } catch (SQLException ignored) {
-            // optional convenience link
         }
     }
 

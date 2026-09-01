@@ -122,6 +122,24 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>StaffServlet</servlet-name>
+        <servlet-class>com.sunrisedental.controller.StaffServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>StaffServlet</servlet-name>
+        <url-pattern>/api/staff</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PatientServlet</servlet-name>
+        <servlet-class>com.sunrisedental.controller.PatientServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientServlet</servlet-name>
+        <url-pattern>/api/patients</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>HealthServlet</servlet-name>
         <servlet-class>com.sunrisedental.controller.HealthServlet</servlet-class>
     </servlet>

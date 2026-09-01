@@ -5,11 +5,6 @@ import com.sunrisedental.dao.ReportDao;
 import com.sunrisedental.model.Appointment;
 import com.sunrisedental.pattern.factory.DaoFactory;
 
-/**
- * Simulated SMS gateway (Dialog / Mobitel style) for the Colombo clinic.
- * Messages are persisted so staff can prove a reminder went out even when
- * a real SMS API key is not configured for the student environment.
- */
 public class SmsNotificationObserver implements AppointmentObserver {
 
     private final ReportDao reports = DaoFactory.get().reports();

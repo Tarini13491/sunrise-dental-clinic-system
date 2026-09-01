@@ -9,17 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Singleton + simple connection pool.
- *
- * Why Singleton: the clinic application must share one pool of MySQL
- * connections. Creating a new DriverManager connection for every servlet
- * request would exhaust MySQL's connection limit during busy clinic hours.
- *
- * Evaluation: Singleton is appropriate for a JVM-scoped resource. It is a
- * poor fit for per-patient state (that belongs in HttpSession). The pool is
- * intentionally small and easy to explain in the assignment report.
- */
+
 public final class DatabaseConnection {
 
     private static volatile DatabaseConnection instance;

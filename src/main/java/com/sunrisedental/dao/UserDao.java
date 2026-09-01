@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao extends BaseDao {
 
@@ -14,6 +16,17 @@ public class UserDao extends BaseDao {
         return withConnection(c -> {
             try (PreparedStatement ps = c.prepareStatement(
                     "SELECT * FROM users WHERE username = ? AND active = 1")) {
+                ps.setString(1, username);
+                try (ResultSet rs = ps.executeQuery()) {
+                    return rs.next() ? map(rs) : null;
+                }
+            }
+        });
+    }
+
+    public User findByUsernameAny(String username) {
+        return withConnection(c -> {
+            try (PreparedStatement ps = c.prepareStatement("SELECT * FROM users WHERE username = ?")) {
                 ps.setString(1, username);
                 try (ResultSet rs = ps.executeQuery()) {
                     return rs.next() ? map(rs) : null;
@@ -135,16 +148,117 @@ public class UserDao extends BaseDao {
         });
     }
 
+    public List<User> listStaff() {
+        return withConnection(c -> {
+            List<User> list = new ArrayList<>();
+            try (PreparedStatement ps = c.prepareStatement(
+                    "SELECT * FROM users WHERE role = 'STAFF' ORDER BY full_name, username");
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(map(rs));
+                }
+            }
+            return list;
+        });
+    }
+
+    public boolean usernameTaken(String username, Integer excludeUserId) {
+        return withConnection(c -> {
+            String sql = excludeUserId == null
+                    ? "SELECT COUNT(*) FROM users WHERE username = ?"
+                    : "SELECT COUNT(*) FROM users WHERE username = ? AND user_id <> ?";
+            try (PreparedStatement ps = c.prepareStatement(sql)) {
+                ps.setString(1, username);
+                if (excludeUserId != null) {
+                    ps.setInt(2, excludeUserId);
+                }
+                try (ResultSet rs = ps.executeQuery()) {
+                    rs.next();
+                    return rs.getInt(1) > 0;
+                }
+            }
+        });
+    }
+
+    public void updateStaff(User user) {
+        withConnection(c -> {
+            try (PreparedStatement ps = c.prepareStatement(
+                    "UPDATE users SET username = ?, full_name = ?, email = ?, phone = ? "
+                            + "WHERE user_id = ? AND role = 'STAFF'")) {
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getFullName());
+                ps.setString(3, user.getEmail());
+                ps.setString(4, user.getPhone());
+                ps.setInt(5, user.getUserId());
+                ps.executeUpdate();
+                return null;
+            }
+        });
+    }
+
+    public void updatePassword(int userId, String passwordHash, String salt) {
+        withConnection(c -> {
+            try (PreparedStatement ps = c.prepareStatement(
+                    "UPDATE users SET password_hash = ?, salt = ? WHERE user_id = ? AND role = 'STAFF'")) {
+                ps.setString(1, passwordHash);
+                ps.setString(2, salt);
+                ps.setInt(3, userId);
+                ps.executeUpdate();
+                return null;
+            }
+        });
+    }
+
+    public void setActive(int userId, boolean active) {
+        withConnection(c -> {
+            try (PreparedStatement ps = c.prepareStatement(
+                    "UPDATE users SET active = ? WHERE user_id = ? AND role = 'STAFF'")) {
+                ps.setInt(1, active ? 1 : 0);
+                ps.setInt(2, userId);
+                ps.executeUpdate();
+                return null;
+            }
+        });
+    }
+
+    public void closeSessionsForUser(int userId) {
+        withConnection(c -> {
+            try (PreparedStatement ps = c.prepareStatement(
+                    "DELETE FROM user_sessions WHERE user_id = ?")) {
+                ps.setInt(1, userId);
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = c.prepareStatement(
+                    "DELETE FROM remember_tokens WHERE user_id = ?")) {
+                ps.setInt(1, userId);
+                ps.executeUpdate();
+            }
+            return null;
+        });
+    }
+
+    public boolean deleteStaff(int userId) {
+        return withConnection(c -> {
+            try (PreparedStatement ps = c.prepareStatement(
+                    "DELETE FROM users WHERE user_id = ? AND role = 'STAFF'")) {
+                ps.setInt(1, userId);
+                return ps.executeUpdate() > 0;
+            }
+        });
+    }
+
     public void ensureDefaultUsers() {
-        if (countUsers() > 0) {
+        if (countUsers() == 0) {
+            seed("admin", "Admin@123", "Nimali Jayasuriya", "ADMIN",
+                    "admin@sunrisedental.lk", "0112345678");
+            seed("staff", "Staff@123", "Kasun Perera", "STAFF",
+                    "desk@sunrisedental.lk", "0112345679");
             return;
         }
-        seed("admin", "Admin@123", "Nimali Jayasuriya", "ADMIN",
-                "admin@sunrisedental.lk", "0112345678");
-        seed("receptionist", "Rec@123", "Kasun Perera", "RECEPTIONIST",
-                "desk@sunrisedental.lk", "0112345679");
-        seed("dentist", "Dent@123", "Dr. Anushka Perera", "DENTIST",
-                "anushka.perera@sunrisedental.lk", "0771234001");
+        if (findByUsernameAny("staff") == null) {
+            seed("staff", "Staff@123", "Kasun Perera", "STAFF",
+                    "desk@sunrisedental.lk", "0112345679");
+        }
     }
 
     private void seed(String username, String password, String name, String role, String email, String phone) {

@@ -2,6 +2,7 @@ package com.sunrisedental.pattern.factory;
 
 import com.sunrisedental.dao.AppointmentDao;
 import com.sunrisedental.dao.BillDao;
+import com.sunrisedental.dao.PatientDao;
 import com.sunrisedental.dao.ReportDao;
 import com.sunrisedental.dao.UserDao;
 
@@ -25,6 +26,7 @@ public final class DaoFactory {
     private final AppointmentDao appointmentDao = new AppointmentDao();
     private final BillDao billDao = new BillDao();
     private final ReportDao reportDao = new ReportDao();
+    private final PatientDao patientDao = new PatientDao();
 
     private DaoFactory() {
     }
@@ -47,5 +49,9 @@ public final class DaoFactory {
 
     public ReportDao reports() {
         return reportDao;
+    }
+
+    public PatientDao patients() {
+        return patientDao;
     }
 }

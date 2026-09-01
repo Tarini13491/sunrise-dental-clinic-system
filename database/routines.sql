@@ -19,7 +19,6 @@ DROP FUNCTION IF EXISTS fn_treatment_cost;
 
 DELIMITER $$
 
--- Unique appointment number: SDC-YYYYMMDD-0001
 CREATE FUNCTION fn_next_appointment_number(p_date DATE)
 RETURNS VARCHAR(24)
 NOT DETERMINISTIC
@@ -43,7 +42,6 @@ BEGIN
     RETURN CONCAT('BILL-', DATE_FORMAT(p_date, '%Y%m%d'), '-', LPAD(v_count, 4, '0'));
 END$$
 
--- Sri Lanka VAT assumption: 8% (see docs/ASSUMPTIONS.md)
 CREATE FUNCTION fn_calc_tax(p_amount DECIMAL(10,2))
 RETURNS DECIMAL(10,2)
 DETERMINISTIC
@@ -75,9 +73,6 @@ BEGIN
     RETURN IFNULL(v_cost, 0);
 END$$
 
--- --------------------------------------------------------------------------
--- Register a new appointment. Creates or reuses a patient by contact number.
--- --------------------------------------------------------------------------
 CREATE PROCEDURE sp_register_appointment(
     IN  p_patient_name     VARCHAR(120),
     IN  p_address          VARCHAR(255),
@@ -175,9 +170,6 @@ BEGIN
     END IF;
 END$$
 
--- --------------------------------------------------------------------------
--- Search a complete appointment record by unique appointment number
--- --------------------------------------------------------------------------
 CREATE PROCEDURE sp_search_appointment(IN p_appointment_no VARCHAR(24))
 BEGIN
     SELECT
@@ -214,9 +206,6 @@ BEGIN
     WHERE a.appointment_number = p_appointment_no;
 END$$
 
--- --------------------------------------------------------------------------
--- Calculate and persist a bill using DB functions for tax/total
--- --------------------------------------------------------------------------
 CREATE PROCEDURE sp_calculate_bill(
     IN  p_appointment_id INT,
     IN  p_discount       DECIMAL(10,2),
@@ -356,11 +345,6 @@ BEGIN
     ORDER BY revenue DESC;
 END$$
 
--- --------------------------------------------------------------------------
--- Triggers — business rules at the database layer
--- --------------------------------------------------------------------------
-
--- Hours and past-date rules. Double booking is also blocked by uq_active_dentist_slot.
 CREATE TRIGGER trg_block_past_appointments
 BEFORE INSERT ON appointments
 FOR EACH ROW

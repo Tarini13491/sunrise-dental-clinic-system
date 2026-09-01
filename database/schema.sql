@@ -22,9 +22,6 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS clinic_counters;
 SET FOREIGN_KEY_CHECKS = 1;
 
--- --------------------------------------------------------------------------
--- Core tables
--- --------------------------------------------------------------------------
 
 CREATE TABLE users (
     user_id        INT AUTO_INCREMENT PRIMARY KEY,
@@ -169,9 +166,6 @@ CREATE TABLE remember_tokens (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 ) ENGINE=InnoDB;
 
--- --------------------------------------------------------------------------
--- Decision-support views (used by management reports)
--- --------------------------------------------------------------------------
 
 CREATE VIEW vw_daily_clinic_summary AS
 SELECT

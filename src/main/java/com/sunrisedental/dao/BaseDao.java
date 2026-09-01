@@ -8,9 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Function;
 
-/**
- * Shared JDBC helpers for every DAO. This keeps SQL in the data tier only.
- */
 public abstract class BaseDao {
 
     protected Connection borrow() {

@@ -1,8 +1,5 @@
 package com.sunrisedental.pattern.strategy;
 
-/**
- * Selects the billing strategy from the treatment category stored in MySQL.
- */
 public final class BillingStrategyFactory {
 
     private BillingStrategyFactory() {

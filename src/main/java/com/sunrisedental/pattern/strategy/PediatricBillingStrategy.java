@@ -2,7 +2,6 @@ package com.sunrisedental.pattern.strategy;
 
 import java.math.BigDecimal;
 
-/** Children receive a 10% family discount on the combined clinical charge. */
 public class PediatricBillingStrategy implements BillingStrategy {
     @Override
     public String name() {

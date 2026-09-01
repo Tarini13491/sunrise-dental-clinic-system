@@ -16,11 +16,6 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Set;
 
-/**
- * Front-door security filter (Front Controller companion).
- * Public API endpoints stay open; everything else requires an active session
- * or a valid remember-me cookie.
- */
 public class AuthenticationFilter implements Filter {
 
     private static final Set<String> PUBLIC = Set.of(
@@ -56,6 +51,10 @@ public class AuthenticationFilter implements Filter {
             return;
         }
         DaoFactory.get().users().touchSession(req.getSession().getId());
+        if (path.startsWith("/api/staff") && !"ADMIN".equals(user.getRole())) {
+            JsonUtil.fail(res, 403, "Only the clinic administrator can manage staff accounts.");
+            return;
+        }
         chain.doFilter(request, response);
     }
 }

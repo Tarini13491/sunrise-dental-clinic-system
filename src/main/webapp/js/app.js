@@ -207,7 +207,7 @@ function renderBill(data) {
   const b = data.bill;
   document.getElementById('bill-box').innerHTML = `
     <div class="receipt" id="receipt">
-      <div class="brand"><img src="/images/logo.png" width="28" alt=""> Sunrise Dental Clinic</div>
+      <div class="brand"><img src="/images/logo.svg" width="28" alt=""> Sunrise Dental Clinic</div>
       <p class="muted">42 Galle Road, Colombo 03 · +94 11 234 5678</p>
       <h3>${a.patientName || ''} · ${a.appointmentNumber || ''}</h3>
       <p>${a.address || ''}<br>${a.contactNumber || ''}<br>${a.dentistName || ''} · ${a.treatmentName || ''}</p>
