@@ -14,9 +14,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
-/**
- * Business-tier authentication. Passwords never leave this layer in plain text.
- */
 public class AuthService {
 
     public static final String SESSION_USER = "currentUser";
