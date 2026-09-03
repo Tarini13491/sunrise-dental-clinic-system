@@ -13,6 +13,4 @@ target/
 out/
 *.war
 *.jar
-!lib/.gitkeep
-notifications-out/
-session-store/
+application.local.properties

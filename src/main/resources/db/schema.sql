@@ -1,9 +1,3 @@
-CREATE DATABASE IF NOT EXISTS sunrise_clinic
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-
-USE sunrise_clinic;
-
 CREATE TABLE IF NOT EXISTS users (
   user_id INT NOT NULL AUTO_INCREMENT,
   username VARCHAR(50) NOT NULL,

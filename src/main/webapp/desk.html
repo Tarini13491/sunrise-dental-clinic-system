@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace | Sunrise Dental Clinic</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/css/clinic.css?v=5">
+  <link rel="icon" href="/images/logo.png">
+</head>
+<body class="workspace-page">
+  <header class="site-header">
+    <div class="brand-row">
+      <img src="/images/logo.png" alt="">
+      <span>Sunrise Dental</span>
+    </div>
+    <nav class="header-nav" id="side-nav"></nav>
+    <div class="header-actions">
+      <div class="user-meta">
+        <strong id="user-name"></strong>
+        <small id="user-role"></small>
+      </div>
+      <span class="avatar" id="user-initials"></span>
+      <button class="btn btn-logout" id="logout-btn" type="button">Log out</button>
+    </div>
+  </header>
+  <div class="workspace-body">
+    <header class="page-heading">
+      <p class="eyebrow" id="role-label"></p>
+      <h1 id="page-title">Dashboard</h1>
+    </header>
+    <main class="content" id="content"></main>
+  </div>
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h3 id="drawer-title"></h3>
+        <button class="icon-btn" id="drawer-close" type="button">Close</button>
+      </div>
+      <div id="drawer-body"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" hidden></div>
+  <script src="/js/http.js?v=9"></script>
+  <script src="/js/desk.js?v=9"></script>
+</body>
+</html>
