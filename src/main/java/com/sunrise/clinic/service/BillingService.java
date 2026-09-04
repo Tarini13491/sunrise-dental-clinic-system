@@ -52,14 +52,14 @@ public class BillingService {
     }
 
     public BillAmounts preview(SessionUser actor, Integer appointmentId) {
-        AccessPolicy.requireStaff(actor);
+        AccessPolicy.requireUser(actor);
         Appointment appointment = loadAppointment(appointmentId);
         Treatment treatment = TreatmentCatalog.require(appointment.getTreatmentType());
         return calculator.calculate(treatment);
     }
 
     public BillRecord create(SessionUser actor, Integer appointmentId) {
-        AccessPolicy.requireStaff(actor);
+        AccessPolicy.requireUser(actor);
         Appointment appointment = loadAppointment(appointmentId);
         if (appointment.getStatus() == AppointmentStatus.CANCELLED) {
             throw new ValidationException("A cancelled appointment cannot be billed.");

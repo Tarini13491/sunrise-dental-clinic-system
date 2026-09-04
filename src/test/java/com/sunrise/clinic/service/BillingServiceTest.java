@@ -1,7 +1,6 @@
 package com.sunrise.clinic.service;
 
 import com.sunrise.clinic.exception.ConflictException;
-import com.sunrise.clinic.exception.ForbiddenException;
 import com.sunrise.clinic.model.AppointmentRecord;
 import com.sunrise.clinic.model.BillRecord;
 import com.sunrise.clinic.model.Patient;
@@ -53,8 +52,10 @@ class BillingServiceTest {
     }
 
     @Test
-    void adminCannotCreateBills() {
-        assertThrows(ForbiddenException.class, () -> billingService.create(admin, appointment.getAppointment().getAppointmentId()));
+    void adminCanCreateBills() {
+        BillRecord bill = billingService.create(admin, appointment.getAppointment().getAppointmentId());
+        assertEquals(new BigDecimal("7500.00"), bill.getTotalAmount());
+        assertTrue(bill.getBillNumber().startsWith("BILL-"));
     }
 
     @Test
