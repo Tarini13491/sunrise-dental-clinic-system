@@ -145,6 +145,21 @@ h1, h2, h3 { letter-spacing: -0.04em; margin: 0; }
   outline: 2px solid rgba(47,107,255,0.25);
   border-color: var(--blue);
 }
+.field input.is-invalid,
+.field .password-field input.is-invalid {
+  border-color: var(--danger);
+}
+.field input.is-invalid:focus,
+.field .password-field input.is-invalid:focus {
+  outline: 2px solid rgba(179, 35, 58, 0.25);
+  border-color: var(--danger);
+}
+.field-error {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--danger);
+}
 .password-field {
   position: relative;
 }

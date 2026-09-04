@@ -8,9 +8,12 @@
   }
 })();
 
+const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
 const passwordToggle = document.getElementById("password-toggle");
 const loginError = document.getElementById("login-error");
+const usernameError = document.getElementById("username-error");
+const passwordError = document.getElementById("password-error");
 
 function showLoginError(message) {
   loginError.textContent = message;
@@ -22,6 +25,27 @@ function hideLoginError() {
   loginError.textContent = "";
   loginError.hidden = true;
   loginError.setAttribute("hidden", "hidden");
+}
+
+function setFieldError(input, errorBox, message) {
+  if (!message) {
+    input.classList.remove("is-invalid");
+    input.removeAttribute("aria-invalid");
+    errorBox.textContent = "";
+    errorBox.hidden = true;
+    errorBox.setAttribute("hidden", "hidden");
+    return;
+  }
+  input.classList.add("is-invalid");
+  input.setAttribute("aria-invalid", "true");
+  errorBox.textContent = message;
+  errorBox.hidden = false;
+  errorBox.removeAttribute("hidden");
+}
+
+function clearFieldErrors() {
+  setFieldError(usernameInput, usernameError, "");
+  setFieldError(passwordInput, passwordError, "");
 }
 
 function setPasswordVisible(visible) {
@@ -39,10 +63,19 @@ document.getElementById("login-form").addEventListener("submit", async (event) =
   event.preventDefault();
   event.stopPropagation();
   hideLoginError();
-  const username = document.getElementById("username").value.trim();
+  clearFieldErrors();
+  const username = usernameInput.value.trim();
   const password = passwordInput.value;
-  if (!username || !password) {
-    showLoginError("Username and password are required.");
+  let hasFieldError = false;
+  if (!username) {
+    setFieldError(usernameInput, usernameError, "Username is required.");
+    hasFieldError = true;
+  }
+  if (!password) {
+    setFieldError(passwordInput, passwordError, "Password is required.");
+    hasFieldError = true;
+  }
+  if (hasFieldError) {
     return;
   }
   try {

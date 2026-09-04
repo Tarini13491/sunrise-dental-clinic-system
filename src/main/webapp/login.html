@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Sunrise Dental Clinic</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap">
-  <link rel="stylesheet" href="/css/clinic.css?v=5">
+  <link rel="stylesheet" href="/css/clinic.css?v=10">
   <link rel="icon" href="/images/logo.png">
 </head>
 <body class="login-page">
@@ -34,6 +34,7 @@
         <label class="field">
           <span>Username</span>
           <input id="username" name="username" autocomplete="username">
+          <p class="field-error" id="username-error" hidden></p>
         </label>
         <label class="field">
           <span>Password</span>
@@ -48,6 +49,7 @@
               </svg>
             </button>
           </div>
+          <p class="field-error" id="password-error" hidden></p>
         </label>
         <label class="remember">
           <input id="remember-me" name="rememberMe" type="checkbox">
@@ -59,6 +61,6 @@
     </main>
   </div>
   <script src="/js/http.js?v=5"></script>
-  <script src="/js/login.js?v=5"></script>
+  <script src="/js/login.js?v=10"></script>
 </body>
 </html>
